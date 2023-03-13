@@ -1,5 +1,7 @@
 package treesetcollection;
 
+import java.lang.management.ManagementFactory;
+
 
 public class Main {
     
@@ -10,67 +12,72 @@ public class Main {
         double end;
         long mem0;
         long mem1;
-        double cpu0;
-        double cpu1;
-        double usedCPU;
+        int cpuCount;
+        long startCPUTime;
+        long startNanoTime;
+        double cpuPercent;
         Runtime rt = Runtime.getRuntime();
-        TreeSetCollection<Integer> treeSetCollection = new TreeSetCollection<>();
+        TreeSetCollection<Integer> treeSet = new TreeSetCollection<>();
         Thread.sleep(3000);
 
-        // treeSet collection Add
-        cpu0 = treeSetCollection.getUsedCPU();
+        
+        // number of available processors;
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        treeSetCollection.add(seed, number);
+        treeSet.add(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = treeSetCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + treeSetCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + treeSetCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        treeSetCollection.writeToFile("treeSetCollectionAddTime.csv", treeSetCollection, treeSetCollection.estimatedTotalTime(start, end));
-        treeSetCollection.writeToFile("treeSetCollectionAddCPU.csv", treeSetCollection, usedCPU);
-        treeSetCollection.writeToFile("treeSetCollectionAddMemory.csv", treeSetCollection, treeSetCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = treeSet.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + treeSet.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + treeSet.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        treeSet.writeToFile("treeSetAddTime.csv", treeSet, treeSet.estimatedTotalTime(start, end));
+        treeSet.writeToFile("treeSetAddCPU.csv", treeSet, cpuPercent);
+        treeSet.writeToFile("treeSetAddMemory.csv", treeSet, treeSet.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
 
         // treeSet collection Contains
-        cpu0 = treeSetCollection.getUsedCPU();
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        treeSetCollection.contains(seed, number);
+        treeSet.contains(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = treeSetCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + treeSetCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + treeSetCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        treeSetCollection.writeToFile("treeSetCollectionSearchTime.csv", treeSetCollection, treeSetCollection.estimatedTotalTime(start, end));
-        treeSetCollection.writeToFile("treeSetCollectionSearchCPU.csv", treeSetCollection, usedCPU);
-        treeSetCollection.writeToFile("treeSetCollectionSearchMemory.csv", treeSetCollection, treeSetCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = treeSet.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + treeSet.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + treeSet.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        treeSet.writeToFile("treeSetSearchTime.csv", treeSet, treeSet.estimatedTotalTime(start, end));
+        treeSet.writeToFile("treeSetSearchCPU.csv", treeSet, cpuPercent);
+        treeSet.writeToFile("treeSetSearchMemory.csv", treeSet, treeSet.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
 
         // treeSet collection Remove
-        cpu0 = treeSetCollection.getUsedCPU();
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        treeSetCollection.remove(seed, number);
+        treeSet.remove(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = treeSetCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + treeSetCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + treeSetCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        treeSetCollection.writeToFile("treeSetCollectionRemoveTime.csv", treeSetCollection, treeSetCollection.estimatedTotalTime(start, end));
-        treeSetCollection.writeToFile("treeSetCollectionRemoveCPU.csv", treeSetCollection, usedCPU);
-        treeSetCollection.writeToFile("treeSetCollectionRemoveMemory.csv", treeSetCollection, treeSetCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = treeSet.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + treeSet.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + treeSet.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        treeSet.writeToFile("treeSetRemoveTime.csv", treeSet, treeSet.estimatedTotalTime(start, end));
+        treeSet.writeToFile("treeSetRemoveCPU.csv", treeSet, cpuPercent);
+        treeSet.writeToFile("treeSetRemoveMemory.csv", treeSet, treeSet.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
-        
+
         System.exit(0);
     }
        

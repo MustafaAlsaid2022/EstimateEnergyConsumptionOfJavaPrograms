@@ -1,6 +1,8 @@
 
 package hashsetcollection;
 
+import java.lang.management.ManagementFactory;
+
 
 public class Main {
     
@@ -11,67 +13,71 @@ public class Main {
         double end;
         long mem0;
         long mem1;
-        double cpu0;
-        double cpu1;
-        double usedCPU;
+        int cpuCount;
+        long startCPUTime;
+        long startNanoTime;
+        double cpuPercent;
         Runtime rt = Runtime.getRuntime();
-        HashSetCollection<Integer> hashSetCollection = new HashSetCollection<>();
+        HashSetCollection<Integer> hashSet = new HashSetCollection<>();
         Thread.sleep(3000);
 
-        // hashSet collection Add
-        cpu0 = hashSetCollection.getUsedCPU();
+        
+        // number of available processors;
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        hashSetCollection.add(seed, number);
+        hashSet.add(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = hashSetCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + hashSetCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + hashSetCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        hashSetCollection.writeToFile("hashSetCollectionAddTime.csv", hashSetCollection, hashSetCollection.estimatedTotalTime(start, end));
-        hashSetCollection.writeToFile("hashSetCollectionAddCPU.csv", hashSetCollection, usedCPU);
-        hashSetCollection.writeToFile("hashSetCollectionAddMemory.csv", hashSetCollection, hashSetCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = hashSet.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + hashSet.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + hashSet.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        hashSet.writeToFile("hashSetAddTime.csv", hashSet, hashSet.estimatedTotalTime(start, end));
+        hashSet.writeToFile("hashSetAddCPU.csv", hashSet, cpuPercent);
+        hashSet.writeToFile("hashSetAddMemory.csv", hashSet, hashSet.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
 
         // hashSet collection Contains
-        cpu0 = hashSetCollection.getUsedCPU();
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        hashSetCollection.contains(seed, number);
+        hashSet.contains(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = hashSetCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + hashSetCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + hashSetCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        hashSetCollection.writeToFile("hashSetCollectionSearchTime.csv", hashSetCollection, hashSetCollection.estimatedTotalTime(start, end));
-        hashSetCollection.writeToFile("hashSetCollectionSearchCPU.csv", hashSetCollection, usedCPU);
-        hashSetCollection.writeToFile("hashSetCollectionSearchMemory.csv", hashSetCollection, hashSetCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = hashSet.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + hashSet.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + hashSet.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        hashSet.writeToFile("hashSetSearchTime.csv", hashSet, hashSet.estimatedTotalTime(start, end));
+        hashSet.writeToFile("hashSetSearchCPU.csv", hashSet, cpuPercent);
+        hashSet.writeToFile("hashSetSearchMemory.csv", hashSet, hashSet.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
 
         // hashSet collection Remove
-        cpu0 = hashSetCollection.getUsedCPU();
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        hashSetCollection.remove(seed, number);
+        hashSet.remove(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = hashSetCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + hashSetCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + hashSetCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        hashSetCollection.writeToFile("hashSetCollectionRemoveTime.csv", hashSetCollection, hashSetCollection.estimatedTotalTime(start, end));
-        hashSetCollection.writeToFile("hashSetCollectionRemoveCPU.csv", hashSetCollection, usedCPU);
-        hashSetCollection.writeToFile("hashSetCollectionRemoveMemory.csv", hashSetCollection, hashSetCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = hashSet.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + hashSet.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + hashSet.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        hashSet.writeToFile("hashSetRemoveTime.csv", hashSet, hashSet.estimatedTotalTime(start, end));
+        hashSet.writeToFile("hashSetRemoveCPU.csv", hashSet, cpuPercent);
+        hashSet.writeToFile("hashSetRemoveMemory.csv", hashSet, hashSet.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
-        
 
         System.exit(0);
     }

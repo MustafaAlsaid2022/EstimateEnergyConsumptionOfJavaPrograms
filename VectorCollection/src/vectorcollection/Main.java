@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vectorcollection;
+
+import java.lang.management.ManagementFactory;
 
 
 public class Main {
@@ -14,67 +12,72 @@ public class Main {
         double end;
         long mem0;
         long mem1;
-        double cpu0;
-        double cpu1;
-        double usedCPU;
+        int cpuCount;
+        long startCPUTime;
+        long startNanoTime;
+        double cpuPercent;
         Runtime rt = Runtime.getRuntime();
-        VectorCollection<Integer> vectorCollection = new VectorCollection<>();
+        VectorCollection<Integer> vector = new VectorCollection<>();
         Thread.sleep(3000);
 
-        // vector collection Add
-        cpu0 = vectorCollection.getUsedCPU();
+        
+        // number of available processors;
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        vectorCollection.add(seed, number);
+        vector.add(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = vectorCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + vectorCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + vectorCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        vectorCollection.writeToFile("vectorCollectionAddTime.csv", vectorCollection, vectorCollection.estimatedTotalTime(start, end));
-        vectorCollection.writeToFile("vectorCollectionAddCPU.csv", vectorCollection, usedCPU);
-        vectorCollection.writeToFile("vectorCollectionAddMemory.csv", vectorCollection, vectorCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = vector.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + vector.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + vector.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        vector.writeToFile("vectorAddTime.csv", vector, vector.estimatedTotalTime(start, end));
+        vector.writeToFile("vectorAddCPU.csv", vector, cpuPercent);
+        vector.writeToFile("vectorAddMemory.csv", vector, vector.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
 
         // vector collection Contains
-        cpu0 = vectorCollection.getUsedCPU();
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        vectorCollection.contains(seed, number);
+        vector.contains(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = vectorCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + vectorCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + vectorCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        vectorCollection.writeToFile("vectorCollectionSearchTime.csv", vectorCollection, vectorCollection.estimatedTotalTime(start, end));
-        vectorCollection.writeToFile("vectorCollectionSearchCPU.csv", vectorCollection, usedCPU);
-        vectorCollection.writeToFile("vectorCollectionSearchMemory.csv", vectorCollection, vectorCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = vector.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + vector.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + vector.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        vector.writeToFile("vectorSearchTime.csv", vector, vector.estimatedTotalTime(start, end));
+        vector.writeToFile("vectorSearchCPU.csv", vector, cpuPercent);
+        vector.writeToFile("vectorSearchMemory.csv", vector, vector.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
 
         // vector collection Remove
-        cpu0 = vectorCollection.getUsedCPU();
+        cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+        startCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+	startNanoTime = System.nanoTime();
         mem0 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         start = System.currentTimeMillis();
-        vectorCollection.remove(seed, number);
+        vector.remove(seed, number);
         end = System.currentTimeMillis();
         mem1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        cpu1 = vectorCollection.getUsedCPU();
-        usedCPU = cpu1 - cpu0;
-        System.out.println("The estimated Time: " + vectorCollection.estimatedTotalTime(start, end));
-        System.out.println("memoryConsumption: " + vectorCollection.getUsedMemory(mem0, mem1));
-        System.out.println("CPUConsumption: " + usedCPU);
-        vectorCollection.writeToFile("vectorCollectionRemoveTime.csv", vectorCollection, vectorCollection.estimatedTotalTime(start, end));
-        vectorCollection.writeToFile("vectorCollectionRemoveCPU.csv", vectorCollection, usedCPU);
-        vectorCollection.writeToFile("vectorCollectionRemoveMemory.csv", vectorCollection, vectorCollection.getUsedMemory(mem0, mem1));
+        cpuPercent = vector.calcCPU(startCPUTime, startNanoTime, cpuCount)/100.0;
+        System.out.println("The estimated Time: " + vector.estimatedTotalTime(start, end));
+        System.out.println("memoryConsumption: " + vector.getUsedMemory(mem0, mem1));
+        System.out.println("CPUConsumption: " + cpuPercent);
+        vector.writeToFile("vectorRemoveTime.csv", vector, vector.estimatedTotalTime(start, end));
+        vector.writeToFile("vectorRemoveCPU.csv", vector, cpuPercent);
+        vector.writeToFile("vectorRemoveMemory.csv", vector, vector.getUsedMemory(mem0, mem1));
         Thread.sleep(3000);
         rt.gc();
-        
+
         System.exit(0);
     }
     }
